@@ -1,9 +1,109 @@
-object pepita {
-  var energy = 100
+//Elementos que pueden ser atacados.
 
-  method energy() = energy
+class Hogar {
+  var nivelDeMugre
+  const property confortQueOfrece
+  
+  method nivelDeMugre() = nivelDeMugre
+  method confortQueOfrece() = confortQueOfrece
 
-  method fly(minutes) {
-    energy = energy - minutes * 3
+  method esBueno() {
+    return nivelDeMugre <= confortQueOfrece / 2
+  }
+}
+
+object nivelDeHuerta {
+  var nivel
+  
+  method nivel() = nivel
+}
+
+class Huerta {
+  var capacidadDeProducción
+  
+  method capacidadDeProducción() = capacidadDeProducción
+
+  method esBueno() {
+    return capacidadDeProducción > nivelDeHuerta.nivel()
+  }
+}
+
+class Mascota {
+  var nivelDeSalud
+  
+  method nivelDeSalud() = nivelDeSalud
+
+  method esBueno() {
+    return nivelDeSalud > 250
+  }
+}
+
+class Barrio {
+  var listaElementos = []
+
+  method listaElementos() = listaElementos
+
+  method esElementoBueno() {
+    return listaElementos.filter({unElemento => unElemento.esBueno()})
+  }
+  
+  method cantidadDeBuenos() {
+    return listaElementos.count({unElemento => unElemento.esBueno()})
+  }
+   
+  method cantidadDeMalos() {
+    return listaElementos.count({unElemento => not unElemento.esBueno()})
+  }
+
+  method esCopado() {
+    return self.cantidadDeBuenos() > self.cantidadDeMalos()
+  }
+}
+
+//Plagas
+
+class Plaga {
+  var poblacion
+
+  method poblacion() = poblacion
+
+  method transmitirEnfermedades() {
+    return poblacion >= 10
+  }
+}
+
+class Cucarachas inherits Plaga {
+  var pesoGramos 
+
+  method pesoPromedio() = pesoGramos
+
+  method nivelDeDanio() {
+    return poblacion / 2
+  }
+
+  override method transmitirEnfermedades() {
+    return super() and self.pesoPromedio() >= 10
+  }
+}
+
+class Pulgas inherits Plaga {
+
+  method nivelDeDanio() {
+    return poblacion * 2
+  }
+}
+
+class Garrapatas inherits Pulgas {
+ 
+}
+
+class Mosquitos inherits Plaga{
+  
+  method nivelDeDanio() {
+    return poblacion
+  }
+
+  override method transmitirEnfermedades() {
+    return super() and poblacion % 3 == 0
   }
 }
