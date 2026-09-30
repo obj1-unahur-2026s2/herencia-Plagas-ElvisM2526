@@ -10,10 +10,14 @@ class Hogar {
   method esBueno() {
     return nivelDeMugre <= confortQueOfrece / 2
   }
+
+  method recibirAtaqueDe(unaPlaga) {
+    nivelDeMugre += unaPlaga.nivelDeDanio()
+  }
 }
 
 object nivelDeHuerta {
-  var nivel
+  var nivel = 20
   
   method nivel() = nivel
 }
@@ -26,6 +30,13 @@ class Huerta {
   method esBueno() {
     return capacidadDeProducción > nivelDeHuerta.nivel()
   }
+
+  method recibirAtaqueDe(unaPlaga) {
+    capacidadDeProducción -= unaPlaga.nivelDeDanio() * 0.1
+    if(unaPlaga.transmitirEnfermedades()) {
+      capacidadDeProducción -= 10
+    }
+  }
 }
 
 class Mascota {
@@ -35,6 +46,12 @@ class Mascota {
 
   method esBueno() {
     return nivelDeSalud > 250
+  }
+
+  method recibirAtaqueDe(unaPlaga) {
+    if(unaPlaga.transmitirEnfermedades()){
+      nivelDeSalud -= unaPlaga.nivelDeDanio()
+    }
   }
 }
 
