@@ -1,9 +1,32 @@
 import example.*
 
-describe "group of tests for pepita" {
+describe "Pruebas de funcionamiento en atacar elementos y recibir efectos de ataque en las plagas" {
+  
+  const hogarDeLosDias = new Hogar(nivelDeMugre = 20, confortQueOfrece= 70)
+  const barrioLaPlata = new Barrio(listaElementos = [hogarDeLosDias])
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  const cucarachasRojas = new Cucarachas(poblacion = 10, pesoGramos = 4)
+
+  test "ataque de las cucarachasRojas al barrioLaPlata" {
+    cucarachasRojas.atacar(hogarDeLosDias)
+
+    assert.that(hogarDeLosDias.esBueno())
+    assert.equals(25, hogarDeLosDias.nivelDeMugre())
+
+    assert.equals(11, cucarachasRojas.poblacion())
+    assert.equals(6, cucarachasRojas.pesoPromedio())
+    assert.notThat(cucarachasRojas.transmitirEnfermedades())
   }
 
+  test "ataque de mosquitos que transmiten enfermedades a una huerta" {
+
+    const huertaDePrueba = new Huerta(capacidadDeProducción = 100)
+    const plagaMosquitos = new Mosquitos(poblacion = 30)
+
+    plagaMosquitos.atacar(huertaDePrueba)
+
+    assert.equals(87, huertaDePrueba.capacidadDeProducción())
+
+    assert.equals(33, plagaMosquitos.poblacion())
+  }
 }
